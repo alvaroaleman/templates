@@ -6,13 +6,15 @@ boxes = [
     :name => 'box1',
     :eth1 => '192.168.199.10',
     :forwardHttp => '80',
-    :forwardHttps => '443'
+    :forwardHttps => '443',
+    :shellProvision => 'sudo yum update -y'
   },
   {
     :name => 'box2',
     :eth1 => '192.168.199.20',
     :forwardHttp => '8080',
-    :forwardHttps => '8443'
+    :forwardHttps => '8443',
+    :shellProvision => 'sudo yum update -y'
   }
 ]
 
@@ -47,6 +49,8 @@ Vagrant.configure(2) do |config|
             ansible.raw_arguments << '--check'
         end
       end
+
+      config.vm.provision :shell, inline: box[:shellProvision]
 
       config.vm.provider :libvirt do |lv|
           lv.cpus = 2
